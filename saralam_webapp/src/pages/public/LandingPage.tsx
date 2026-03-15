@@ -104,7 +104,8 @@ export function LandingPage() {
     queryKey: ['services', 'featured'],
     queryFn: async () => {
       const res = await servicesApi.list({ featured: true, page_size: 8 })
-      return (res.data?.data as ServiceListItem[]) ?? []
+      const raw = (res.data as { data?: { items?: ServiceListItem[] } })?.data
+      return Array.isArray(raw?.items) ? raw.items : []
     },
   })
 
@@ -424,7 +425,7 @@ export function LandingPage() {
           ) : (
             <div className="mt-10 overflow-x-auto pb-4 md:overflow-visible">
               <div className="flex gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
-                {(featuredData ?? []).slice(0, 4).map((service) => (
+                {(Array.isArray(featuredData) ? featuredData : []).slice(0, 4).map((service) => (
                   <div key={service.id} className="min-w-[280px] md:min-w-0">
                     <ServiceCard service={service} />
                   </div>

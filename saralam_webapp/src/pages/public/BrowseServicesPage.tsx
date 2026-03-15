@@ -76,9 +76,10 @@ export function BrowseServicesPage() {
     },
   })
 
-  const items = listData?.data ?? []
-  const totalPages = listData?.total_pages ?? 1
-  const total = listData?.total ?? 0
+  const paginated = listData?.data != null && typeof listData.data === 'object' ? listData.data : null
+  const items = Array.isArray(paginated?.data) ? paginated.data : []
+  const totalPages = paginated?.total_pages ?? 1
+  const total = paginated?.total ?? 0
 
   return (
     <div className="min-h-screen bg-[var(--color-surface-2)]">

@@ -14,15 +14,16 @@ export function AppLayout() {
   const location = useLocation()
   const user = useAuthStore((s) => s.user)
   useNotifications()
+  const isLoggedIn = !!user
   const isSeekerRoute = location.pathname.startsWith('/seeker')
   const showSeekerBottomNav = user?.role === 'seeker' && isSeekerRoute
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <MobileNav />
+      {isLoggedIn && <MobileNav />}
       <div className="flex flex-1">
-        <Sidebar />
+        {isLoggedIn && <Sidebar />}
         <main className={cn('flex-1 overflow-auto', showSeekerBottomNav && 'pb-16')}>
           <Outlet />
         </main>
