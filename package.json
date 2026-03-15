@@ -1,0 +1,19 @@
+{
+  "name": "saralam",
+  "private": true,
+  "description": "Saralam — service marketplace platform monorepo",
+  "workspaces": [
+    "saralam_webapp",
+    "saralam_admin"
+  ],
+  "scripts": {
+    "dev:webapp": "npm run dev -w saralam_webapp",
+    "dev:admin": "npm run dev -w saralam_admin",
+    "build:webapp": "npm run build -w saralam_webapp",
+    "build:admin": "npm run build -w saralam_admin",
+    "build": "npm run build:webapp && npm run build:admin"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

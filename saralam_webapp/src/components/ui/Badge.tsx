@@ -1,0 +1,42 @@
+import { type HTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
+
+export type BadgeVariant =
+  | 'default'
+  | 'primary'
+  | 'accent'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'outline'
+
+export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
+  variant?: BadgeVariant
+}
+
+const variantStyles: Record<BadgeVariant, string> = {
+  default: 'bg-[var(--color-surface-3)] text-[var(--color-text-secondary)]',
+  primary: 'bg-[var(--color-primary-100)] text-[var(--color-primary-700)]',
+  accent: 'bg-[var(--color-accent-50)] text-[var(--color-accent-600)]',
+  success: 'bg-emerald-100 text-emerald-800',
+  warning: 'bg-amber-100 text-amber-800',
+  danger: 'bg-red-100 text-red-700',
+  outline: 'border border-[var(--color-border)] bg-transparent text-[var(--color-text-secondary)]',
+}
+
+export function Badge({
+  className,
+  variant = 'default',
+  ...props
+}: BadgeProps) {
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium',
+        variantStyles[variant],
+        className
+      )}
+      {...props}
+    />
+  )
+}

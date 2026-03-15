@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    ports: ["8000:8000"]
+    env_file: ./backend/.env
+    environment:
+      - DB_SERVER=db
+      - DB_PORT=1433
+      - DB_NAME=${DB_NAME:-saralam}
+      - DB_USER=${DB_USER:-sa}
+      - DB_PASSWORD=${DB_PASSWORD:-YourDevPassword123!}
+    depends_on:
+      - db
+
+  webapp:
+    build: ./saralam_webapp
+    ports: ["5173:80"]
+    depends_on:
+      - backend
+
+  admin:
+    build: ./saralam_admin
+    ports: ["5174:80"]
+    depends_on:
+      - backend
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourDevPassword123!"
+    ports: ["1433:1433"]
+    volumes:
+      - mssql-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  mssql-data:
